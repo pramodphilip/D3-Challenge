@@ -71,6 +71,7 @@ function createChart(data) {
                         'healthcare','healthcareLow','healthcareHigh','obesity',
                         'obesityLow','obesityHigh','smokes','smokesLow','smokesHigh']);
 
+    /********** Setting Default Chart **********/
     let yScale = d3
         .scaleLinear()
         .domain(d3.extent(data,(d)=>d.healthcare))
@@ -84,60 +85,68 @@ function createChart(data) {
 
     /******************** Chart Labels  **********************/
     // X-axis label for Poverty
-    chartGroup
+    var poverty = chartGroup
         .append('text')
         .text('In Poverty (%)')
+        .classed('active',true)
         .attr('x',chartWidth/2)
         .attr('y',chartHeight + chartMargin.top + 10)
         .attr("text-anchor", "middle")
         .attr("font-size", "16px")
 
-    // X-axis label for Age
-    chartGroup
-        .append('text')
-        .text('Age (Median)')
-        .attr('x',chartWidth/2)
-        .attr('y',chartHeight + chartMargin.top + 35)
-        .attr("text-anchor", "middle")
-        .attr("font-size", "16px")
+    // // X-axis label for Age
+    // var age = chartGroup
+    //     .append('text')
+    //     .text('Age (Median)')
+    //     .classed('inactive',true)
+    //     .attr('x',chartWidth/2)
+    //     .attr('y',chartHeight + chartMargin.top + 35)
+    //     .attr("text-anchor", "middle")
+    //     .attr("font-size", "16px")
 
-    // X-axis label for Household Income
-    chartGroup
-        .append('text')
-        .text('Household Income (Median)')
-        .attr('x',chartWidth/2)
-        .attr('y',chartHeight + chartMargin.top + 60)
-        .attr("text-anchor", "middle")
-        .attr("font-size", "16px")
+    // // X-axis label for Household Income
+    // var income = chartGroup
+    //     .append('text')
+    //     .text('Household Income (Median)')
+    //     .classed('inactive',true)
+    //     .attr('x',chartWidth/2)
+    //     .attr('y',chartHeight + chartMargin.top + 60)
+    //     .attr("text-anchor", "middle")
+    //     .attr("font-size", "16px")
 
     // Y-axis label for Healthcare
-    chartGroup
+    var health = chartGroup
         .append('text')
         .attr('transform','rotate(-90)')
         .text('Lacks Healthcare (%)')
+        .classed('active',true)
         .attr('y',0-chartMargin.left+65)
         .attr('x',0-(chartHeight/2))
         .attr("text-anchor", "middle")
         .attr("font-size", "16px")
 
-    
-    chartGroup
-        .append('text')
-        .attr('transform','rotate(-90)')
-        .text('Smokes (%)')
-        .attr('y',0-chartMargin.left+40)
-        .attr('x',0-(chartHeight/2))
-        .attr("text-anchor", "middle")
-        .attr("font-size", "16px")
+    // // Y-axis label for Smokes
+    // var smokes = chartGroup
+    //     .append('text')
+    //     .attr('transform','rotate(-90)')
+    //     .text('Smokes (%)')
+    //     .classed('inactive',true)
+    //     .attr('y',0-chartMargin.left+40)
+    //     .attr('x',0-(chartHeight/2))
+    //     .attr("text-anchor", "middle")
+    //     .attr("font-size", "16px")
 
-    chartGroup
-        .append('text')
-        .attr('transform','rotate(-90)')
-        .text('Obese (%)')
-        .attr('y',0-chartMargin.left+20)
-        .attr('x',0-(chartHeight/2))
-        .attr("text-anchor", "middle")
-        .attr("font-size", "16px")
+    // // Y-axis label for Obesity
+    // var obese = chartGroup
+    //     .append('text')
+    //     .attr('transform','rotate(-90)')
+    //     .text('Obese (%)')
+    //     .classed('inactive',true)
+    //     .attr('y',0-chartMargin.left+20)
+    //     .attr('x',0-(chartHeight/2))
+    //     .attr("text-anchor", "middle")
+    //     .attr("font-size", "16px")
+
     /************** Creating Axes ************/
     let bottomAxis = d3.axisBottom(xScale);
     let leftAxis = d3.axisLeft(yScale);
@@ -165,7 +174,7 @@ function createChart(data) {
         .classed("stateCircle", true)
         .attr("cx", (d)=> xScale(d.poverty))
         .attr("cy", (d)=> yScale(d.healthcare))
-        .attr("r", 10);
+        .attr("r", 12);
 
     chartGroup
         .selectAll(".stateText")
@@ -218,10 +227,54 @@ function createChart(data) {
             .style("top", event.pageY + "px");
       }
 
-    /*********************************************/
+    // /******** Activation of Labels *******/
+    // function handleAge() {
+    //     age.classed('inactive',false).classed('active',true)
+    //     poverty.classed('inactive',true)
 
+    //     let xScale = d3
+    //     .scaleLinear()
+    //     .domain(d3.extent(data,(d)=>d.age))
+    //     .range([0,chartWidth]);
 
+    //     let bottomAxis = d3.axisBottom(xScale);
+
+    //     //Appending bottom axis
+    //     chartGroup
+    //     .append("g")
+    //     .call(bottomAxis)
+    //     .attr('transform',`translate(0,${chartHeight})`)
+    //     .classed("axis",true)
+
+    //     chartGroup
+    //     .selectAll(".stateCircle") //select all of the class
+    //     .data(data) //bind data
+    //     .enter() //grab any extra data
+    //     .append("circle") //append a circle for those extras
+    //     .classed("stateCircle", true)
+    //     .attr("cx", (d)=> xScale(d.age))
+
+    //     chartGroup
+    //     .selectAll(".stateText")
+    //     .data(data)
+    //     .enter()
+    //     .append("text")
+    //     .classed("stateText",true)
+    //     .text(function(d) {
+    //         return d.abbr
+    //     })
+    //     .attr('x',(d) => xScale(d.age))
+    //     .attr('y',function(d) {
+    //         return 5+yScale(d.healthcare)
+    //     })
+    //     .attr("font-size","9px")
+    // }
     
-
+    // function handlePov(){
+    //     poverty.classed('inactive',false).classed('active',true)
+    //     age.classed('inactive',true)
+    // }
+    // age.on('click',handleAge);
+    // poverty.on('click',handlePov);
 
 }
